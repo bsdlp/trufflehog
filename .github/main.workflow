@@ -4,6 +4,6 @@ workflow "build and test" {
 }
 
 action "test" {
-  uses = "docker://golang:1.12.7-alpine"
+  uses = "docker://golang:1.12.7"
   args = "go test -v ./..."
 }
