@@ -18,7 +18,6 @@ func findYelpBizID(n *html.Tokenizer) string {
 			}
 		}
 	}
-	return ""
 }
 
 func getYelpBizID(n html.Token) string {

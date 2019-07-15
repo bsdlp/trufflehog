@@ -1,6 +1,11 @@
 workflow "build and test" {
   on = "push"
-  resolves = ["test"]
+  resolves = ["test", "lint"]
+}
+
+action "lint" {
+  uses = "docker://golangci/golangci-lint"
+  args = "golangci-lint run ./..."
 }
 
 action "test" {
