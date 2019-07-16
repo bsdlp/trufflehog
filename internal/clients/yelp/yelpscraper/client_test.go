@@ -1,7 +1,6 @@
 package yelpscraper
 
 import (
-	"net/http"
 	"strings"
 	"testing"
 
@@ -70,11 +69,8 @@ func TestFindYelpBizID(t *testing.T) {
 	assert.Equal(t, "4yPqqJDJOQX69gC66YUDkA", findYelpBizID(html.NewTokenizer(strings.NewReader(peterLugerYelpPage))))
 }
 
-func TestIntegrationFindYelpBizID(t *testing.T) {
-	resp, err := http.Get("https://www.yelp.com/biz/peter-luger-brooklyn-2")
+func TestIntegrationScrapeForYelpBizID(t *testing.T) {
+	bizID, err := ScrapeForYelpBizID("https://www.yelp.com/biz/peter-luger-brooklyn-2")
 	require.NoError(t, err)
-
-	defer resp.Body.Close()
-
-	assert.Equal(t, "4yPqqJDJOQX69gC66YUDkA", findYelpBizID(html.NewTokenizer(resp.Body)))
+	assert.Equal(t, "4yPqqJDJOQX69gC66YUDkA", bizID)
 }

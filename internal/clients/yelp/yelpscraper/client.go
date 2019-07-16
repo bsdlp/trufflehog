@@ -1,9 +1,22 @@
 package yelpscraper
 
 import (
+	"net/http"
+
 	"golang.org/x/net/html"
 	"golang.org/x/net/html/atom"
 )
+
+// ScrapeForYelpBizID parses a yelp business page for its business ID
+func ScrapeForYelpBizID(yelpURL string) (bizID string, err error) {
+	resp, err := http.Get(yelpURL)
+	if err != nil {
+		return "", err
+	}
+	bizID = findYelpBizID(html.NewTokenizer(resp.Body))
+	err = resp.Body.Close()
+	return bizID, err
+}
 
 func findYelpBizID(n *html.Tokenizer) string {
 	for {
