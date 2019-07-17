@@ -70,7 +70,30 @@ func TestFindYelpBizID(t *testing.T) {
 }
 
 func TestIntegrationScrapeForYelpBizID(t *testing.T) {
-	bizID, err := ScrapeForYelpBizID("https://www.yelp.com/biz/peter-luger-brooklyn-2")
-	require.NoError(t, err)
-	assert.Equal(t, "4yPqqJDJOQX69gC66YUDkA", bizID)
+	type fixture struct {
+		name  string
+		url   string
+		bizID string
+	}
+	fixtures := []fixture{
+		{
+			name:  "full url",
+			url:   "https://www.yelp.com/biz/peter-luger-brooklyn-2",
+			bizID: "4yPqqJDJOQX69gC66YUDkA",
+		},
+		{
+			name:  "shortened url",
+			url:   "https://yelp.to/qTKq/nLyqzz0caY",
+			bizID: "sSiUcnbwPQ4ssHY3EMV0Fw",
+		},
+	}
+
+	for _, f := range fixtures {
+		t.Run(f.name, func(t *testing.T) {
+			t.Parallel()
+			bizID, err := ScrapeForYelpBizID(f.url)
+			require.NoError(t, err)
+			assert.Equal(t, f.bizID, bizID)
+		})
+	}
 }
